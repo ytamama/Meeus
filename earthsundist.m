@@ -17,7 +17,7 @@
 %references: Algorithms from Chapter 32 of Astronomical
 %Algorithms, 2nd Edition, by Jean Meeus
 
-%updated 2-22-2020
+%updated 2-23-2020
 
 function es_dist = earthsundist(year,month,day,hours,minutes,seconds,calendar)
 
@@ -52,7 +52,7 @@ end
 if minutes >= 60 || minutes < 0 || mod(minutes,1) ~= 0
     error("Minutes should be a whole number within 0-60, excluding 60.")
 end
-if seconds >= 60 || seconds
+if seconds >= 60
     error("Seconds should be within 0-60, excluding 60.")
 end
 
