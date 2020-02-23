@@ -29,7 +29,7 @@
 %as these times are set to not separate by more than .9 second 
 %Source: https://eclipse.gsfc.nasa.gov/SEhelp/TimeZone.html
 
-%updated 2-21-2020
+%updated 2-23-2020
 
 function [deltat,tdyear,tdmonth,tdday,tddecday,tdhr,tdmin,tdsec] = todyntimenasa(year,month,day,hours,minutes,seconds,calendar)
 
@@ -64,7 +64,7 @@ end
 if minutes >= 60 || minutes < 0 || mod(minutes,1) ~= 0
     error("Minutes should be a whole number within 0-60, excluding 60.")
 end
-if seconds >= 60 || seconds
+if seconds >= 60
     error("Seconds should be within 0-60, excluding 60.")
 end
 
