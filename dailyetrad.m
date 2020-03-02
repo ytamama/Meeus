@@ -23,6 +23,31 @@
 %Updated 03/02/2020
 
 function etrad = dailyetrad(obslong, obslat, year, month, day, calendar, timezone)
+%check for valid user inputs
+numdays=[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  %number of days in each month
+numdaysleap=[31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+if mod(year,1) ~= 0
+    error("Year should be an integer.")
+end
+if month > 12 || month < 1 || mod(month,1) ~= 0
+    error("Month should be an integer within 1-12.")
+end
+if day < 1 || mod(day,1) ~= 0
+    error("Invalid day input. The day should be a whole number starting with one.")
+end
+if calendar ~= 1 && calendar ~= 2 %invalid calendar specification
+    error("Invalid calendar specification. Input 1 for Gregorian Calendar and 2 for Julian")
+end
+if isleapyear(year,calendar) == 1 %is a leap year
+    if day > numdaysleap(month)
+        error("Day exceeds the number of days possible in the input month.")
+    end
+else  %common day
+    if day > numdays(month)
+        error("Day exceeds the number of days possible in the input month.")
+    end
+end
 
 %compute time the sun rises and sets, and the time in between, midtime
 [risetime, ~, suntime] = sunriseandsetmeeus(obslong, obslat, year, month, day, calendar);
