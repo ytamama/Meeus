@@ -21,7 +21,7 @@
 %Chapters 13, 15 of Astronomical Algorithms, 2nd Edition, by Jean Meeus
 %test cases checked with NOAA Solar Calculator: https://www.esrl.noaa.gov/gmd/grad/solcalc/
 
-%updated 2-23-2020
+%updated 3-05-2020
 
 function [risetime, settime, suntime] = sunriseandsetmeeus(obslong, obslat, year, month, day, calendar)
 
@@ -50,6 +50,14 @@ else  %common day
         error("Day exceeds the number of days possible in the input month.")
     end
 end
+
+%check inputted longitude and latitude
+if abs(obslat) > 90
+    error("Inputted value exceeds range of latitude values!")
+elseif abs(obslong) > 180
+    error("Inputted value exceeds range of longitude values!")
+end
+
 
 %compute apparent sidereal time at the given date at 00:00:00 UT in
 %Greenwich, in degrees
@@ -133,7 +141,8 @@ end
 [rightaaft, decaft] = solarposition(yearaft,monthaft,dayaft,hraft,minaft,secaft,calendar,0);
 
 
-%compute local hour angle of the sun at the day of at 00:00:00 TD
+%compute approximate hour angle of sun rise/set at the day of
+%using declination at 00:00:00 TD
 stdalt = -(50/60);  %standard altitude of the sun
 hterm1 = sind(stdalt)/(cosd(obslat)*cosd(decnow));
 hterm2 = -tand(obslat)*tand(decnow);
@@ -257,5 +266,6 @@ end
 
 
 end
+
 
 
