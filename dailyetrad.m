@@ -19,10 +19,13 @@
 %references:
 %Chapter 3 of FAO Irrigation and Drainage Paper, No. 56, Crop 
 %Evapotranspiration by Richard G. Allen et al., 1998
+%
+%Chapter 15 of Astronomical Algorithms, 2nd Edition, by Jean Meeus
 
-%Updated 03/02/2020
+%Updated 03/05/2020
 
 function etrad = dailyetrad(obslong, obslat, year, month, day, calendar, timezone)
+
 %check for valid user inputs
 numdays=[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  %number of days in each month
 numdaysleap=[31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -85,8 +88,16 @@ esdist_mid = earthsundist(midyr, midmon, midday, midhr, midmin, midsec, calendar
 %compute declination at mid-time, in degrees
 [~, decmid] = solarposition(midyr, midmon, midday, midhr, midmin, midsec, calendar, timezone);
 
-%compute sunset hour angle at mid-time, in degrees
-set_ang = acosd(-tand(obslat)*tand(decmid));
+%compute approximate sunset hour angle of the day, in degrees
+%formula 15.1 from Meeus' Astronomical Algorithms, page 102
+stdalt = -(50/60);  %standard altitude of the sun
+hterm1 = sind(stdalt)/(cosd(obslat)*cosd(decmid));  %argument 1
+hterm2 = -tand(obslat)*tand(decmid);                %argument 2
+if hterm2 > 1 || hterm2 < -1  %absolute value of 2nd term is beyond 1
+    error("The sun doesn't rise or set at this location!")
+else
+    set_ang = acosd(hterm1 - hterm2);  %degrees, between 0 and 180 degrees
+end
 
 %compute extraterrestrial radiation of the day
 coeff = (24*60*.0820*esdist_mid)/pi;
@@ -95,12 +106,6 @@ term2 = cosd(obslat)*cosd(decmid)*sind(set_ang);
 etrad = coeff*(term1+term2);  
 
 end
-
-
-
-
-
-
 
 
 
