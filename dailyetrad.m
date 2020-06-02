@@ -27,7 +27,7 @@ function etrad=dailyetrad(obslong,obslat,year,month,day,calendar,timezone)
 %
 % Chapter 15 of Astronomical Algorithms, 2nd Edition, by Jean Meeus
 %
-% Last modfied by Yuri Tamama 03/05/2020
+% Last modfied by Yuri Tamama 06/02/2020
 
 % Solar constant in MJ m−2 min−1 (doi: 10.1007/s00704-020-03140-4) 
 solconst=.0820;
